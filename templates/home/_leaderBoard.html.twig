@@ -1,0 +1,7 @@
+{% for leader in leaderboard %}
+    <tr class="{{ leader.user==app.user?'bg-success':'' }} ">
+        <td>{{ leader.user }}</td>
+        <td>{{ leader.weight }}</td>
+        <td>{{ leader.in_cats }}</td>
+    </tr>
+{% endfor %}

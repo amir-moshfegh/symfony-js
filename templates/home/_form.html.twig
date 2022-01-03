@@ -1,0 +1,23 @@
+{{ form_start(form,{
+    'attr':{
+        'class':'form-inline js-delete-rep-log-form'
+    }
+}) }}
+
+{{ form_row(form.item,{
+    'label_attr': {'class': 'sr-only'},
+}) }}
+
+{{ form_row(form.reps,{
+    'label_attr': {'class': 'sr-only'},
+    'attr':{
+        'placeholder': 'How many times?',
+        'class': 'ml-2',
+    }
+}) }}
+
+
+<button class="ml-2 btn btn-success"> I Lifted it!</button>
+
+
+{{ form_end(form) }}

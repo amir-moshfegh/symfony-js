@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\RepLog;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -47,4 +48,36 @@ class RepLogRepository extends ServiceEntityRepository
         ;
     }
     */
+
+
+    /**
+     * @param User|null $getUser
+     * @return int|mixed|string
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findSumWeightLiftedByUser(User $getUser)
+    {
+        return $this->createQueryBuilder('rl')
+            ->select('SUM(rl.totalWeightLifted)')
+            ->andWhere('rl.author = :user')
+            ->setParameter(':user', $getUser)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+
+    /**
+     * @return RepLog[]
+     */
+    public function findSumWeightLiftedAllUser()
+    {
+        return
+            $this->createQueryBuilder('rl')
+                ->select('IDENTITY(rl.author) as userId, SUM(rl.totalWeightLifted) as weight')
+                ->groupBy('userId')
+                ->orderBy('weight', 'DESC')
+                ->getQuery()
+                ->getResult();
+    }
 }

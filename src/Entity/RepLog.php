@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\RepLogRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=RepLogRepository::class)
@@ -28,6 +29,7 @@ class RepLog
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\GreaterThan(value="0")
      */
     private $reps;
 
@@ -60,19 +62,20 @@ class RepLog
     {
         $this->reps = $reps;
 
+        $this->calcTotalWeightLifted();
+
         return $this;
     }
 
     public function getItem(): ?string
     {
-        return $this->item;
+        return ucwords(str_replace("_", " ", $this->item));
     }
 
     public function setItem(string $item): self
     {
         $this->item = $item;
         $this->calcTotalWeightLifted();
-
         return $this;
     }
 
@@ -107,6 +110,33 @@ class RepLog
 
     private function calcTotalWeightLifted()
     {
+        if (!$this->getItem()) {
+            return;
+        }
+
         $this->setTotalWeightLifted($this->reps * self::$thingsYouCanLift[$this->item]);
+    }
+
+    /**
+     * @return array
+     */
+    public static function getThingsYouCanLiftChoises()
+    {
+        $things = array_keys(self::$thingsYouCanLift);
+        $arr = array_flip(
+            array_combine(
+                $things,
+                array_map("ucwords",
+                    str_replace("_", " ", $things)
+                )
+            )
+        );
+
+        return $arr;
+    }
+
+    public function __toString()
+    {
+        return $this->item;
     }
 }

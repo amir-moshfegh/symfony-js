@@ -17,7 +17,9 @@ class RepLogType extends AbstractType
                 'choices' => RepLog::getThingsYouCanLiftChoises(),
                 'placeholder' => 'What did you lift?',
             ])
-            ->add('reps');
+            ->add('item')
+            ->add('reps')
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

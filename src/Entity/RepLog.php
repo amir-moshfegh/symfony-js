@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\RepLogRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -30,21 +31,28 @@ class RepLog
     /**
      * @ORM\Column(type="integer")
      * @Assert\GreaterThan(value="0")
+     * @Assert\NotBlank(message="This value should not be blank.")
+     * @Groups("main")
      */
     private $reps;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank(message="This value should not be blank.")
+     * @Assert\NotNull(message="This value should not be null.")
+     * @Groups("main")
      */
     private $item;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups("main")
      */
     private $totalWeightLifted;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="repLogs")
+     * @Groups("main")
      */
     private $author;
 
@@ -69,7 +77,7 @@ class RepLog
 
     public function getItem(): ?string
     {
-        return ucwords(str_replace("_", " ", $this->item));
+        return $this->item ? ucwords(str_replace("_", " ", $this->item)) : null;
     }
 
     public function setItem(string $item): self

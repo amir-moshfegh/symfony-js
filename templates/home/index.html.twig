@@ -28,13 +28,15 @@
                         </td>
                     </tr>
                 {% endfor %}
+                </tbody>
+                <tfoot>
                 <tr class="h5">
                     <td>&nbsp;</td>
                     <td>Total</td>
                     <td class="js-sumLogs">{{ sumLogs }}</td>
                     <td>&nbsp;</td>
                 </tr>
-                </tbody>
+                </tfoot>
             </table>
             {{ include('home/_form.html.twig') }}
         </div>
@@ -61,11 +63,11 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{ asset('js/script.js') }}"></script>
     <script>
         $(document).ready(function () {
             const $wrapper = $('.js-rep-log-table')
             let repLogApp = new RepLogApp($wrapper)
         })
     </script>
-    <script src="{{ asset('js/script.js') }}"></script>
 {% endblock %}
